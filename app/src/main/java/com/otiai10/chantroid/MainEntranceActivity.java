@@ -1,17 +1,25 @@
 package com.otiai10.chantroid;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
-
-public class MainEntranceActivity extends Activity {
+public class MainEntranceActivity extends Activity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_entrance);
+
+        // delegate button events
+        Button entryButton = (Button)this.findViewById(R.id.EntryButton);
+        entryButton.setOnClickListener(this);
     }
 
 
@@ -35,5 +43,10 @@ public class MainEntranceActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onClick(View v) {
+        // ここでとりあえず遷移する
+        Log.d(this.getLocalClassName(), "ここでチャットルームのwebviewに遷移する");
     }
 }
