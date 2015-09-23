@@ -5,11 +5,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.regex.Pattern;
 
 public class MainEntranceActivity extends Activity implements View.OnClickListener {
 
@@ -47,10 +51,26 @@ public class MainEntranceActivity extends Activity implements View.OnClickListen
     }
 
     public void onClick(View v) {
-        Intent intent = new Intent(this, RoomActivity.class);
-        String url = "http://chant:guess@chant.otiai10.com";
-        // String url = "http://10.0.2.2:14000";
-        intent.putExtra("url", url);
-        this.startActivity(intent);
+        EditText serverURL = (EditText)this.findViewById(R.id.serverURL);
+        String url = serverURL.getText().toString();
+        if (url.isEmpty() || url.matches("")) {
+            return; // abort
+        }
+
+        Log.d(this.getLocalClassName(), url + ":" + this.checkInputIsValidURL(url));
+        if (this.checkInputIsValidURL(url)) {
+            Log.d(this.getLocalClassName(), "ここでほぞん");
+            /*
+            Intent intent = new Intent(this, RoomActivity.class);
+            intent.putExtra("url", url);
+            this.startActivity(intent);
+            */
+            return;
+        }
+    }
+
+    private boolean checkInputIsValidURL(String input) {
+        Pattern URL_PATTERN = Patterns.WEB_URL;
+        return URL_PATTERN.matcher(input).matches();
     }
 }
