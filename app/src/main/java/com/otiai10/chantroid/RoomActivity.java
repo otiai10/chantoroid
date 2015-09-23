@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 
 public class RoomActivity extends Activity {
@@ -12,6 +14,11 @@ public class RoomActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
+
+        // ここでWebViewの中身をつくる
+        WebView oppaiWV = (WebView)this.findViewById(R.id.oppaiWebView);
+        oppaiWV.setWebViewClient(new WebViewClient());
+        oppaiWV.loadUrl("http://google.com");
     }
 
 
