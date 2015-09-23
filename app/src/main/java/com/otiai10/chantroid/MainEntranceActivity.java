@@ -48,6 +48,9 @@ public class MainEntranceActivity extends Activity implements View.OnClickListen
 
     public void onClick(View v) {
         Intent intent = new Intent(this, RoomActivity.class);
+        String url = "http://chant:guess@chant.otiai10.com";
+        // String url = "http://10.0.2.2:14000";
+        intent.putExtra("url", url);
         this.startActivity(intent);
     }
 }

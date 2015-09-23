@@ -1,9 +1,12 @@
 package com.otiai10.chantroid;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -15,10 +18,22 @@ public class RoomActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
 
-        // ここでWebViewの中身をつくる
+        // WebView.setWebContentsDebuggingEnabled(true);
+
         WebView oppaiWV = (WebView)this.findViewById(R.id.oppaiWebView);
         oppaiWV.setWebViewClient(new WebViewClient());
-        oppaiWV.loadUrl("http://google.com");
+
+        // {{{
+        oppaiWV.getSettings().setJavaScriptEnabled(true);
+        oppaiWV.getSettings().setDomStorageEnabled(true);
+        oppaiWV.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        // }}}
+
+        Intent intent = this.getIntent();
+        String url = intent.getStringExtra("url");
+        Log.d(this.getLocalClassName(), "url:" + url);
+
+        oppaiWV.loadUrl(url);
     }
 
 
