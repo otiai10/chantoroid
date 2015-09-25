@@ -2,6 +2,7 @@ package com.otiai10.chantroid;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,6 +14,8 @@ import android.webkit.WebViewClient;
 
 public class RoomActivity extends Activity {
 
+    private String currentServerURL;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +24,7 @@ public class RoomActivity extends Activity {
         // WebView.setWebContentsDebuggingEnabled(true);
 
         WebView oppaiWV = (WebView)this.findViewById(R.id.oppaiWebView);
-        oppaiWV.setWebViewClient(new WebViewClient());
+        oppaiWV.setWebViewClient(new RoomIntentRulesWebViewClient());
 
         // {{{
         oppaiWV.getSettings().setJavaScriptEnabled(true);
@@ -31,7 +34,8 @@ public class RoomActivity extends Activity {
 
         Intent intent = this.getIntent();
         String url = intent.getStringExtra("url");
-        Log.d(this.getLocalClassName(), "url:" + url);
+
+        this.currentServerURL = url;
 
         oppaiWV.loadUrl(url);
     }
@@ -57,5 +61,15 @@ public class RoomActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private class RoomIntentRulesWebViewClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String u) {
+            Uri uri = Uri.parse(u);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+            return true;
+        }
     }
 }
