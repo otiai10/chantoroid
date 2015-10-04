@@ -1,9 +1,11 @@
 package com.otiai10.chantroid;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -18,6 +20,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.Toast;
+
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -47,6 +51,8 @@ public class MainEntranceActivity extends Activity implements View.OnClickListen
 
         savedServerURLsListView.setAdapter(adapter);
         savedServerURLsListView.setOnItemClickListener(this);
+
+
     }
 
 
@@ -73,6 +79,29 @@ public class MainEntranceActivity extends Activity implements View.OnClickListen
     }
 
     public void onClick(View v) {
+
+        final GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+        // これは単なるプロジェクトID
+        // http://stackoverflow.com/questions/11294602/android-gcm-sender-id
+        final String SENDER_ID = "721713162121";
+
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                try {
+                    String regid = gcm.register(SENDER_ID);
+                    return "とれたやつ:" + regid;
+                } catch (java.io.IOException err) {
+                    return "しっぱい:" + err.toString();
+                }
+            }
+            @Override
+            protected void onPostExecute(String msg) {
+                Log.d("onPostExecute", msg);
+            }
+        }.execute(null, null, null);
+
+        /*
         EditText serverURL = (EditText)this.findViewById(R.id.serverURL);
         String url = serverURL.getText().toString();
 
@@ -85,6 +114,7 @@ public class MainEntranceActivity extends Activity implements View.OnClickListen
         }
 
         intentToServerURL(url);
+        */
     }
 
     /**
